@@ -116,7 +116,34 @@ module.exports.addProduct = async (req, res) => {
             product,
         });
     } catch (error) {
-        console.log('Något gick fel vid post signup: ' + error);
+        console.log('Något gick fel vid post /products: ' + error);
+
+        // Hantera valideringsfel och returnera individuella felmeddelanden
+        if (error.name === 'ValidationError') {
+            const errors = Object.values(error.errors).map((err) => err.message);
+            return res.status(400).json({ errors });
+        }
+        return res.status(400).json({ error });
+    }
+};
+
+//Ändra en produkt
+module.exports.editProduct = async (req, res) => {
+    resetErrors();
+    const id = req.params.id;
+    try {
+        let updatedProduct = await Product.findByIdAndUpdate(id, req.body);
+
+        if (!updatedProduct) {
+            errors.https_response.message = 'Not found';
+            errors.https_response.code = 404;
+            errors.message = 'No data to show';
+            return res.json({ errors });
+        } else {
+            return res.json({ message: 'Product updated successfully', updatedProduct });
+        }
+    } catch (error) {
+        console.log('Något gick fel vid put /products/:id : ' + error);
 
         // Hantera valideringsfel och returnera individuella felmeddelanden
         if (error.name === 'ValidationError') {
