@@ -51,10 +51,72 @@ module.exports.getReviews = async (req, res) => {
 };
 
 //Hämta omdömen baserat på id
+module.exports.getReviewById = async (req, res) => {
+    resetErrors();
+
+    const id = req.params.id;
+    //Hitta via id
+    try {
+        const result = await Review.findById(id);
+
+        //Kolla resultat
+        if (!result) {
+            errors.https_response.message = 'Not found';
+            errors.https_response.code = 404;
+            errors.message = 'No data to show';
+            return res.json({ errors });
+        }
+        //Resultat
+        return res.json({ result });
+    } catch (error) {
+        console.log('Någonting gick fel vid get /reviews/:id : ' + error);
+        return res.status(400).json({ error });
+    }
+};
 
 //Hämta omdömen baserat på ej gransad
+module.exports.getUnapproved = async (req, res) => {
+    resetErrors();
+
+    //Hitta via approved: false
+    try {
+        const result = await Review.find({ approved: false });
+        //Kolla resultat
+        if (!result) {
+            errors.https_response.message = 'Not found';
+            errors.https_response.code = 404;
+            errors.message = 'No data to show';
+            return res.json({ errors });
+        }
+        //Resultat
+        return res.json({ result });
+    } catch (error) {
+        console.log('Någonting gick fel vid get /reviews/filter/unapproved: ' + error);
+        return res.status(400).json({ error });
+    }
+};
 
 //Hämta bara granskade omdömen
+module.exports.getApproved = async (req, res) => {
+    resetErrors();
+
+    //Hitta via approved: true
+    try {
+        const result = await Review.find({ approved: true });
+        //Kolla resultat
+        if (!result) {
+            errors.https_response.message = 'Not found';
+            errors.https_response.code = 404;
+            errors.message = 'No data to show';
+            return res.json({ errors });
+        }
+        //Resultat
+        return res.json({ result });
+    } catch (error) {
+        console.log('Någonting gick fel vid get /reviews/filter/approved : ' + error);
+        return res.status(400).json({ error });
+    }
+};
 
 //Lägg till omdöme
 module.exports.addReview = async (req, res) => {
@@ -103,3 +165,23 @@ module.exports.approveReview = async (req, res) => {
 };
 
 //Radera omdöme
+module.exports.deleteReview = async (req, res) => {
+    resetErrors();
+    const id = req.params.id;
+
+    try {
+        const result = await Review.findByIdAndDelete(id);
+        //Tomt resultat = felmeddelanden
+        if (!result) {
+            errors.https_response.message = 'Not found';
+            errors.https_response.code = 404;
+            errors.message = 'No data to show';
+            errors.details = 'Post already deleted';
+            return res.json({ errors });
+        }
+        return res.json({ message: 'Deleted id ' + id, result });
+    } catch (error) {
+        console.log('Något gick fel vid delete /reviews/:id : ' + error);
+        return res.status(400).json({ error });
+    }
+};

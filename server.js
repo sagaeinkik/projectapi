@@ -8,10 +8,17 @@ require('dotenv').config();
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const authRoutes = require('./routes/authRoutes');
+const mongoSanitize = require('express-mongo-sanitize');
 
 //Parsing
 app.use(cors());
 app.use(express.json());
+//Skydda lite mot NoSQL injections
+app.use(
+    mongoSanitize({
+        allowDots: true,
+    })
+);
 
 //Port
 const port = process.env.PORT || 3000;

@@ -2,7 +2,7 @@
 //Importer
 
 const mongoose = require('mongoose');
-const { isEmail } = require('validator'); //Validera mailadress
+const { isEmail, escape } = require('validator'); //Validera mailadress
 const bcrypt = require('bcrypt'); //Kryptera lösenord
 
 //Schema
@@ -24,6 +24,14 @@ const userSchema = new mongoose.Schema({
         required: [true, 'Ange ett lösenord'],
         minLength: [6, 'Ditt lösenord måste vara minst 6 tecken långt'],
     },
+});
+
+//Gör om eventuella taggar till html-entities för att motverka xss
+userSchema.pre('save', function (next) {
+    this.username = escape(this.username);
+    this.email = escape(this.email);
+    this.password = escape(this.password);
+    next();
 });
 
 //Kryptera lösenord

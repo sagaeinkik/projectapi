@@ -22,8 +22,12 @@ router.delete('/products/:id', productController.deleteProduct); //Radera produk
 
 //Reviews
 router.get('/reviews', reviewController.getReviews); //Hämta alla omdömen
+router.get('/reviews/:id', reviewController.getReviewById); //Hämta specifikt omdöme
+router.get('/reviews/filter/unapproved', reviewController.getUnapproved); //Hämta omdömen som inte är granskade ännu
+router.get('/reviews/filter/approved', reviewController.getApproved); //Hämta omdömen som är granskade
 router.post('/reviews', reviewController.addReview); //Lägg till omdöme
 router.put('/reviews/:id', reviewController.approveReview); //Ändra omdöme till approved: true
+router.delete('/reviews/:id', reviewController.deleteReview); //Radera
 
 //Users
 router.post('/signup', authController.registerUser); //Lägg till ny användare

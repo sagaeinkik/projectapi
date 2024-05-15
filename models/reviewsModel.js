@@ -1,7 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
-const { isEmail } = require('validator'); //Validera mailadress
+const { isEmail, escape } = require('validator'); //Validera mailadress
 
 const reviewSchema = new mongoose.Schema({
     fullName: {
@@ -30,6 +30,18 @@ const reviewSchema = new mongoose.Schema({
         default: false,
         required: true,
     },
+});
+
+//Gör om eventuella taggar till html-entities för att motverka xss
+reviewSchema.pre('save', function (next) {
+    this.fullName = escape(this.fullName);
+    this.email = escape(this.email);
+
+    //Comment är inte required, så kolla om den finns först
+    if (this.comment) {
+        this.comment = escape(this.comment);
+    }
+    next();
 });
 
 const Review = mongoose.model('review', reviewSchema);

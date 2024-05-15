@@ -1,6 +1,7 @@
 'use strict';
 
 const mongoose = require('mongoose');
+const { escape } = require('validator');
 
 //Schema
 const productSchema = new mongoose.Schema({
@@ -26,6 +27,13 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'Ange pris'],
     },
+});
+
+//Gör om eventuella taggar till html-entities för att motverka xss
+productSchema.pre('save', function (next) {
+    this.name = escape(this.name);
+    this.category = escape(this.category); //Ska inte behövas då det är enum men bara ifall
+    next();
 });
 
 const Product = mongoose.model('product', productSchema);
