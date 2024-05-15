@@ -1,7 +1,6 @@
 'use strict';
 //Importer
 const User = require('../models/userModel');
-const Product = require('../models/productModel');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -37,122 +36,6 @@ function resetErrors() {
         }
     });
 }
-
-//Hämta alla produkter
-module.exports.getProducts = async (req, res) => {
-    resetErrors();
-    try {
-        const result = await Product.find({});
-        //Felmeddelande om inga resultat
-        if (!result) {
-            errors.https_response.code = 404;
-            errors.https_response.message = 'Not found';
-            errors.message = 'No data to show';
-            return res.json({ errors });
-        }
-        //Annars, skicka tillbaka resultat
-        res.status(200).json(result);
-    } catch (error) {
-        console.log('Något gick fel vid get /products: ' + error);
-        return res.status(500).json({ error });
-    }
-};
-
-//Hämta specifik produkt med hjälp av id
-module.exports.getProductById = async (req, res) => {
-    resetErrors();
-    const id = req.params.id;
-    //kod här
-    try {
-        const result = await Product.findById(id);
-        //Felmeddelande om inga resultat
-        if (!result) {
-            errors.https_response.code = 404;
-            errors.https_response.message = 'Not found';
-            errors.message = 'No data to show';
-            return res.json({ errors });
-        }
-        res.status(200).json(result);
-    } catch (error) {
-        console.log('Något gick fel vid get /products/:id : ' + error);
-        return res.status(500).json({ error });
-    }
-};
-
-//Hämta specifik produkt med hjälp av produktnamn
-module.exports.getProductByName = async (req, res) => {
-    resetErrors();
-    //Produktnamn
-    const name = req.params.name;
-    let decodedName = decodeURIComponent(name);
-
-    try {
-        const result = await Product.find({ name: { $regex: new RegExp('^' + decodedName, 'i') } });
-        if (!result || result.length < 1) {
-            errors.https_response.message = 'Not found';
-            errors.https_response.code = 404;
-            errors.message = 'No data to show';
-            return res.json({ errors });
-        } else {
-            //Visa resultat
-            return res.json({ result });
-        }
-    } catch (error) {
-        console.log('Något gick fel vid get products/name/:name');
-        return res.status(500).json({ error });
-    }
-};
-
-// Lägg till ny produkt i Menyn
-module.exports.addProduct = async (req, res) => {
-    resetErrors();
-
-    const { name, category, price } = req.body;
-
-    try {
-        const product = await Product.create({ name, category, price });
-        res.status(200).json({
-            message: 'Ny produkt tillagd!',
-            product,
-        });
-    } catch (error) {
-        console.log('Något gick fel vid post /products: ' + error);
-
-        // Hantera valideringsfel och returnera individuella felmeddelanden
-        if (error.name === 'ValidationError') {
-            const errors = Object.values(error.errors).map((err) => err.message);
-            return res.status(400).json({ errors });
-        }
-        return res.status(400).json({ error });
-    }
-};
-
-//Ändra en produkt
-module.exports.editProduct = async (req, res) => {
-    resetErrors();
-    const id = req.params.id;
-    try {
-        let updatedProduct = await Product.findByIdAndUpdate(id, req.body);
-
-        if (!updatedProduct) {
-            errors.https_response.message = 'Not found';
-            errors.https_response.code = 404;
-            errors.message = 'No data to show';
-            return res.json({ errors });
-        } else {
-            return res.json({ message: 'Product updated successfully', updatedProduct });
-        }
-    } catch (error) {
-        console.log('Något gick fel vid put /products/:id : ' + error);
-
-        // Hantera valideringsfel och returnera individuella felmeddelanden
-        if (error.name === 'ValidationError') {
-            const errors = Object.values(error.errors).map((err) => err.message);
-            return res.status(400).json({ errors });
-        }
-        return res.status(400).json({ error });
-    }
-};
 
 //Registrera ny användare
 module.exports.registerUser = async (req, res) => {
