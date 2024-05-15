@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema({
     category: {
         type: String,
         required: [true, 'Ange kategori'],
-        enums: [
+        enum: [
             'hot-bev',
             'cold-bev',
             'pastries',
