@@ -43,7 +43,7 @@ module.exports.getReviews = async (req, res) => {
             return res.json({ errors });
         }
         //Resultat
-        return res.json({ result });
+        return res.json(result);
     } catch (error) {
         console.log('Något gick fel vid get /reviews: ' + error);
         return res.status(500).json({ error });
@@ -67,7 +67,7 @@ module.exports.getReviewById = async (req, res) => {
             return res.json({ errors });
         }
         //Resultat
-        return res.json({ result });
+        return res.json(result);
     } catch (error) {
         console.log('Någonting gick fel vid get /reviews/:id : ' + error);
         return res.status(400).json({ error });
@@ -89,7 +89,7 @@ module.exports.getUnapproved = async (req, res) => {
             return res.json({ errors });
         }
         //Resultat
-        return res.json({ result });
+        return res.json(result);
     } catch (error) {
         console.log('Någonting gick fel vid get /reviews/filter/unapproved: ' + error);
         return res.status(400).json({ error });
@@ -111,7 +111,7 @@ module.exports.getApproved = async (req, res) => {
             return res.json({ errors });
         }
         //Resultat
-        return res.json({ result });
+        return res.json(result);
     } catch (error) {
         console.log('Någonting gick fel vid get /reviews/filter/approved : ' + error);
         return res.status(400).json({ error });

@@ -90,7 +90,7 @@ module.exports.getProductByName = async (req, res) => {
             return res.json({ errors });
         }
         //Visa resultat
-        return res.json({ result });
+        return res.json(result);
     } catch (error) {
         console.log('Något gick fel vid get products/name/:name');
         return res.status(500).json({ error });
@@ -116,7 +116,7 @@ module.exports.getProductsByCategory = async (req, res) => {
             return res.json({ errors });
         }
         //Visa resultat
-        return res.json({ result });
+        return res.json(result);
     } catch (error) {
         console.log('Något gick fel vid get products/category/:category');
         return res.status(500).json({ error });

@@ -46,3 +46,32 @@ DB_URL=YOUR_MONGODB_URL
 ```
 
 JWT_SECRET_KEY kan genereras genom att köra kommandot `node generateSecret.js` och kopiera det resultat man får tillbaka i konsollen.
+
+## Exempelanvändning
+
+`GET url/reviews` ger resultat som kan se ut såhär:
+
+```
+[
+  {
+    "_id": "66452b73b280c4f7aff4d7e4",
+    "fullName": "Loka",
+    "email": "hey@mail.se",
+    "rating": 4,
+    "comment": "Mango",
+    "posted": "2024-05-15T21:38:30.468Z",
+    "approved": true,
+    "__v": 0
+  },
+  {
+    "_id": "6644f71d58c8dc94274d6a60",
+    "fullName": "Mario",
+    "email": "mario@mail.se",
+    "rating": 5,
+    "comment": "Enastående service",
+    "posted": "2024-05-15T17:42:00.492Z",
+    "approved": false,
+    "__v": 0
+  }
+]
+```
