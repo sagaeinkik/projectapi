@@ -1,6 +1,7 @@
 'use strict';
 //Importer
 const User = require('../models/userModel');
+const Product = require('../models/productModel');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -9,6 +10,11 @@ const expirationDate = 60 * 60 * 3; //Tre timmar
 function createToken(username) {
     return jwt.sign({ username }, process.env.JWT_SECRET_KEY, { expiresIn: expirationDate });
 }
+
+//Hämta alla producter
+module.exports.getProducts = async (req, res) => {
+    //kod här
+};
 
 //Registrera ny användare
 module.exports.registerUser = async (req, res) => {
@@ -93,5 +99,36 @@ module.exports.login = async (req, res) => {
             // Annars, generellt felmeddelande
             return res.status(400).json({ error });
         }
+    }
+};
+
+// Lägg till ny produkt i Menyn
+module.exports.addProduct = async (req, res) => {
+    //Error-meddelanden
+    let errors = {
+        https_response: {
+            message: '',
+            code: '',
+        },
+        message: '',
+        details: '',
+    };
+    const { name, category, price } = req.body;
+
+    try {
+        const product = await Product.create({ name, category, price });
+        res.status(200).json({
+            message: 'Ny produkt tillagd!',
+            product,
+        });
+    } catch (error) {
+        console.log('Något gick fel vid post signup: ' + error);
+
+        // Hantera valideringsfel och returnera individuella felmeddelanden
+        if (error.name === 'ValidationError') {
+            const errors = Object.values(error.errors).map((err) => err.message);
+            return res.status(400).json({ errors });
+        }
+        return res.status(400).json({ error });
     }
 };

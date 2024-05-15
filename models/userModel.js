@@ -16,6 +16,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Ange en mailadress'],
         unique: [true, 'Denna mailadress är upptagen'],
+        lowercase: true,
+        validate: isEmail,
     },
     password: {
         type: String,
