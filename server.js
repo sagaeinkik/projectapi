@@ -41,7 +41,7 @@ app.use(authRoutes);
 app.get('/', (req, res) => {
     res.json({
         message:
-            'Det här är mitt API för projektet för Backendbaserad webbutveckling på Mittuniversitetet. Du hittar instruktioner för användning på mitt github-repo, ((LÄNKA HÄR)) ',
+            'Det här är Saga Kikajons API för projektet för Backendbaserad webbutveckling på Mittuniversitetet. Du hittar instruktioner för användning på mitt github-repo, https://github.com/sagaeinkik/projectapi',
     });
 });
 

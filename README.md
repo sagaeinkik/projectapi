@@ -10,6 +10,7 @@ Projektuppgiften går ut på 2-3 delar; skapa en webbtjänst för att göra CRUD
 
 Webbtjänsten är skapad med Express och använder sig av cors, jsonwebtoken och validator samt express-mongo-sanitizer. Som databas används MongoDB på Atlas, och paketet Mongoose utnyttjas för att strukturera data.
 Till sist används dotenv och nodemon som dev dependencies.  
+Mycket av funktionaliteten för användarregistrering, inloggning, felmeddelanden och dylikt har återvunnits från mina tidigare arbeten, framförallt https://github.com/sagaeinkik/api-cv2.
 Använd `npm install` i terminalen för att hämta hem samtliga paket efter att git-repot har klonats ner lokalt.
 
 ## Användning
