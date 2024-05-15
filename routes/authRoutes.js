@@ -7,8 +7,11 @@ const router = Router();
 //Funktionerna
 const authController = require('../controllers/authControllers');
 const productController = require('../controllers/productControllers');
+const reviewController = require('../controllers/reviewControllers');
 
 /* ROUTES */
+
+//Products
 router.get('/products', productController.getProducts); //alla produkter
 router.get('/products/:id', productController.getProductById); //Specifik produkt (id)
 router.get('/products/product/:name', productController.getProductByName); //specifik produkt (namn)
@@ -17,6 +20,12 @@ router.post('/products', productController.addProduct); //Lägg till produkt
 router.put('/products/:id', productController.editProduct); //Uppdatera produkt
 router.delete('/products/:id', productController.deleteProduct); //Radera produkt
 
+//Reviews
+router.get('/reviews', reviewController.getReviews); //Hämta alla omdömen
+router.post('/reviews', reviewController.addReview); //Lägg till omdöme
+router.put('/reviews/:id', reviewController.approveReview); //Ändra omdöme till approved: true
+
+//Users
 router.post('/signup', authController.registerUser); //Lägg till ny användare
 router.post('/login', authController.login); //Logga in befintlig användare
 

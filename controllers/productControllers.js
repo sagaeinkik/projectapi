@@ -2,7 +2,6 @@
 
 //Importer
 const Product = require('../models/productModel');
-require('dotenv').config();
 
 //ERROR-OBJEKT
 let errors = {
@@ -36,7 +35,7 @@ module.exports.getProducts = async (req, res) => {
     //Nollställ error
     resetErrors();
     try {
-        const result = await Product.find({});
+        const result = await Product.find({}).sort({ category: 1 });
         //Felmeddelande om inga resultat
         if (!result) {
             errors.https_response.code = 404;
