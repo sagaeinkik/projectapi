@@ -20,8 +20,13 @@ const productSchema = new mongoose.Schema({
             'cakes',
             'salads',
             'sandwiches',
+            'bread',
             'others',
         ],
+    },
+    description: {
+        type: String,
+        maxLength: 250,
     },
     price: {
         type: Number,
