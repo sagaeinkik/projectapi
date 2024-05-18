@@ -164,7 +164,7 @@ module.exports.approveReview = async (req, res) => {
             return res.json({ errors });
         }
         //Logga händelse
-        await createLog('Review', updateReview._id, 'approved', username);
+        await createLog('Review', updateReview._id, 'Review approved', username);
         //Resultat
         return res.json({ message: 'Review approved successfully', updateReview });
     } catch (error) {
@@ -192,7 +192,7 @@ module.exports.deleteReview = async (req, res) => {
             errors.details = 'Post already deleted';
             return res.json({ errors });
         }
-        await createLog('Review', result._id, 'deleted', username);
+        await createLog('Review', result._id, 'Review deleted', username);
         return res.json({ message: 'Deleted id ' + id, result });
     } catch (error) {
         console.log('Något gick fel vid delete /reviews/:id : ' + error);

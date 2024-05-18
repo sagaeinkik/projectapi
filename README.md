@@ -15,7 +15,9 @@ Använd `npm install` i terminalen för att hämta hem samtliga paket efter att 
 
 ## Användning
 
-API:et är uppdelat i tre kollektioner. Det finns funktionalitet för att skapa och logga in användare, för att hantera produkter, och för att hantera användaromdömen. Följande endpoints används:
+API:et är uppdelat i tre kollektioner. Det finns funktionalitet för att skapa och logga in användare, för att hantera produkter, och för att hantera användaromdömen.  
+Skapande, uppdatering eller radering av produkter samt uppdatering eller radering av omdömen loggas automatiskt i en logg-kollektion. Skapande av ny användare loggas också, men då loggas det med ett default-användarnamn som utfört handlingen.
+Följande endpoints används:
 
 | Metod   |  Ändpunkt                     | Beskrivning                                           |
 | ------- | ----------------------------- | ----------------------------------------------------- |
@@ -28,6 +30,7 @@ API:et är uppdelat i tre kollektioner. Det finns funktionalitet för att skapa 
 |  GET    |  /reviews/filter/unapproved   |  Hämtar alla omdömen med approved: false som egenskap |
 |  GET    |  /reviews/filter/approved     | Hämtar alla omdömen med approved: true som egenskap   |
 |  GET    |  /protected                   |  Nås endast med hjälp av giltig JWT                   |
+| GET     |  /logs                        | Visar de 15 senaste loggade händelserna i databasen   |
 | POST    |  /products                    |  Lägger till ny produkt                               |
 |  POST   |  /reviews                     |  Lägger till nytt omdöme                              |
 |  POST   |  /signup                      |  Skapar ny användare                                  |

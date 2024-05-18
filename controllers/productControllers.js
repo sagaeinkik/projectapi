@@ -138,7 +138,7 @@ module.exports.addProduct = async (req, res) => {
     try {
         const product = await Product.create({ name, category, price });
         //Logga
-        await createLog('Product', product._id, 'created', username);
+        await createLog('Product', product._id, 'Product added', username);
         return res.status(200).json({
             message: 'Ny produkt tillagd!',
             product,
@@ -176,7 +176,7 @@ module.exports.editProduct = async (req, res) => {
             return res.json({ errors });
         }
         //Logga händelse
-        await createLog('Product', updatedProduct._id, 'updated', username);
+        await createLog('Product', updatedProduct._id, 'Product updated', username);
         //Resultat
         return res.json({ message: 'Product updated successfully', updatedProduct });
     } catch (error) {
@@ -212,7 +212,7 @@ module.exports.deleteProduct = async (req, res) => {
             return res.json({ errors });
         }
         //Logga händelse
-        await createLog('Product', result._id, 'deleted', username);
+        await createLog('Product', result._id, 'Product deleted', username);
         //Resultat
         return res.status(200).json({ result });
     } catch (error) {
