@@ -3,7 +3,7 @@
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-
+const { createLog } = require('../models/logModel');
 //Skapa web token
 const expirationDate = 60 * 60 * 3; //Tre timmar
 function createToken(username) {
@@ -63,6 +63,7 @@ module.exports.registerUser = async (req, res) => {
             user: { username: user.username, email: user.email },
             token,
         });
+        await createLog('Users', user._id, 'User added', 'DB-Lord');
     } catch (error) {
         console.log('Något gick fel vid post signup: ' + error);
 
@@ -114,10 +115,10 @@ module.exports.authenticateToken = async (req, res, next) => {
 
     if (!token) return res.status(401).json({ message: 'Unauthorized, missing token' });
 
-    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, username) => {
+    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
         if (err) return res.status(403).json({ message: 'Unauthorized, invalid token' });
 
-        req.username = username;
+        req.username = user.username;
         next();
     });
 };

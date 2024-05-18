@@ -2,6 +2,7 @@
 
 //Importer
 const Product = require('../models/productModel');
+const { createLog } = require('../models/logModel');
 
 //ERROR-OBJEKT
 let errors = {
@@ -37,7 +38,7 @@ module.exports.getProducts = async (req, res) => {
     try {
         const result = await Product.find({}).sort({ category: 1 });
         //Felmeddelande om inga resultat
-        if (!result) {
+        if (!result || result.length < 1) {
             errors.https_response.code = 404;
             errors.https_response.message = 'Not found';
             errors.message = 'No data to show';
@@ -59,7 +60,7 @@ module.exports.getProductById = async (req, res) => {
     try {
         const result = await Product.findById(id);
         //Felmeddelande om inga resultat
-        if (!result) {
+        if (!result || result.length < 1) {
             errors.https_response.code = 404;
             errors.https_response.message = 'Not found';
             errors.message = 'No data to show';
@@ -128,9 +129,16 @@ module.exports.addProduct = async (req, res) => {
     resetErrors();
     //Värdena som skickas med i anropet
     const { name, category, price } = req.body;
+    // Hitta användarnamn från req om man är inloggad
+    let username = req.username;
+    if (!username) {
+        username = 'DB-Lord';
+    }
     //Skapa nytt dokument i products-collection
     try {
         const product = await Product.create({ name, category, price });
+        //Logga
+        await createLog('Product', product._id, 'created', username);
         return res.status(200).json({
             message: 'Ny produkt tillagd!',
             product,
@@ -152,6 +160,11 @@ module.exports.editProduct = async (req, res) => {
     resetErrors();
     //Hitta id
     const id = req.params.id;
+    // Hitta användarnamn från req om man är inloggad
+    let username = req.username;
+    if (!username) {
+        username = 'DB-Lord';
+    }
     //Hitta och uppdateera enligt id
     try {
         let updatedProduct = await Product.findByIdAndUpdate(id, req.body);
@@ -162,6 +175,8 @@ module.exports.editProduct = async (req, res) => {
             errors.message = 'No data to show';
             return res.json({ errors });
         }
+        //Logga händelse
+        await createLog('Product', updatedProduct._id, 'updated', username);
         //Resultat
         return res.json({ message: 'Product updated successfully', updatedProduct });
     } catch (error) {
@@ -180,6 +195,11 @@ module.exports.editProduct = async (req, res) => {
 module.exports.deleteProduct = async (req, res) => {
     resetErrors();
     const id = req.params.id;
+    // Hitta användarnamn från req om man är inloggad
+    let username = req.username;
+    if (!username) {
+        username = 'DB-Lord';
+    }
     //Hitta och radera enligt ID
     try {
         const result = await Product.findByIdAndDelete(id);
@@ -191,6 +211,9 @@ module.exports.deleteProduct = async (req, res) => {
             errors.details = 'Post already deleted';
             return res.json({ errors });
         }
+        //Logga händelse
+        await createLog('Product', result._id, 'deleted', username);
+        //Resultat
         return res.status(200).json({ result });
     } catch (error) {
         console.log('Något gick fel vid delete /products/:id : ' + error);

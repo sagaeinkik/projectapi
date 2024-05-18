@@ -1,6 +1,7 @@
 'use strict';
 
 const Review = require('../models/reviewsModel');
+const { createLog } = require('../models/logModel');
 
 //ERROR-OBJEKT
 let errors = {
@@ -144,8 +145,13 @@ module.exports.addReview = async (req, res) => {
 //Uppdatera omdöme - ändra granskad till true
 module.exports.approveReview = async (req, res) => {
     resetErrors();
-
+    //Review-id
     const id = req.params.id;
+    // Hitta användarnamn från req om man är inloggad
+    let username = req.username;
+    if (!username) {
+        username = 'DB-Lord';
+    }
 
     try {
         const updateReview = await Review.findByIdAndUpdate(id, { approved: true });
@@ -157,6 +163,9 @@ module.exports.approveReview = async (req, res) => {
 
             return res.json({ errors });
         }
+        //Logga händelse
+        await createLog('Review', updateReview._id, 'approved', username);
+        //Resultat
         return res.json({ message: 'Review approved successfully', updateReview });
     } catch (error) {
         console.log('Något gick fel vid put /reviews/:id : ' + error);
@@ -168,7 +177,11 @@ module.exports.approveReview = async (req, res) => {
 module.exports.deleteReview = async (req, res) => {
     resetErrors();
     const id = req.params.id;
-
+    // Hitta användarnamn från req om man är inloggad
+    let username = req.username;
+    if (!username) {
+        username = 'DB-Lord';
+    }
     try {
         const result = await Review.findByIdAndDelete(id);
         //Tomt resultat = felmeddelanden
@@ -179,6 +192,7 @@ module.exports.deleteReview = async (req, res) => {
             errors.details = 'Post already deleted';
             return res.json({ errors });
         }
+        await createLog('Review', result._id, 'deleted', username);
         return res.json({ message: 'Deleted id ' + id, result });
     } catch (error) {
         console.log('Något gick fel vid delete /reviews/:id : ' + error);
