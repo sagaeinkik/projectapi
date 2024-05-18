@@ -38,6 +38,10 @@ const productSchema = new mongoose.Schema({
 productSchema.pre('save', function (next) {
     this.name = escape(this.name);
     this.category = escape(this.category); //Ska inte behövas då det är enum men bara ifall
+
+    if (this.description) {
+        this.description = escape(this.description);
+    }
     next();
 });
 

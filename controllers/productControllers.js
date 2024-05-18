@@ -128,7 +128,7 @@ module.exports.getProductsByCategory = async (req, res) => {
 module.exports.addProduct = async (req, res) => {
     resetErrors();
     //Värdena som skickas med i anropet
-    const { name, category, price } = req.body;
+    const { name, category, description, price } = req.body;
     // Hitta användarnamn från req om man är inloggad
     let username = req.username;
     if (!username) {
@@ -136,7 +136,7 @@ module.exports.addProduct = async (req, res) => {
     }
     //Skapa nytt dokument i products-collection
     try {
-        const product = await Product.create({ name, category, price });
+        const product = await Product.create({ name, category, description, price });
         //Logga
         await createLog('Product', product._id, 'Product added', username);
         return res.status(200).json({
