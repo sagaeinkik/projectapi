@@ -45,26 +45,6 @@ app.get('/', (req, res) => {
     });
 });
 
-//skyddad route
-app.get('/protected', authenticateToken, (req, res) => {
-    res.json({ message: 'Access granted', username: req.username });
-});
-
-//Tokenvalidering
-function authenticateToken(req, res, next) {
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1]; //Själva token utan ord
-
-    if (!token) return res.status(401).json({ message: 'Unauthorized, missing token' });
-
-    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, username) => {
-        if (err) return res.status(403).json({ message: 'Unauthorized, invalid token' });
-
-        req.username = username;
-        next();
-    });
-}
-
 //Starta applikation
 app.listen(port, (error) => {
     if (error) {

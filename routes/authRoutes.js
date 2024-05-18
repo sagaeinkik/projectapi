@@ -32,6 +32,9 @@ router.delete('/reviews/:id', reviewController.deleteReview); //Radera
 //Users
 router.post('/signup', authController.registerUser); //Lägg till ny användare
 router.post('/login', authController.login); //Logga in befintlig användare
-
+//skyddad route
+router.get('/protected', authController.authenticateToken, (req, res) => {
+    res.json({ message: 'Access granted', username: req.username });
+});
 //Exportera
 module.exports = router;
