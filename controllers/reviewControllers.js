@@ -81,7 +81,7 @@ module.exports.getUnapproved = async (req, res) => {
 
     //Hitta via approved: false
     try {
-        const result = await Review.find({ approved: false });
+        const result = await Review.find({ approved: false }).sort({ posted: -1 });
         //Kolla resultat
         if (!result) {
             errors.https_response.message = 'Not found';
@@ -103,7 +103,7 @@ module.exports.getApproved = async (req, res) => {
 
     //Hitta via approved: true
     try {
-        const result = await Review.find({ approved: true });
+        const result = await Review.find({ approved: true }).sort({ posted: -1 });
         //Kolla resultat
         if (!result) {
             errors.https_response.message = 'Not found';
