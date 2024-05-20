@@ -26,7 +26,7 @@ router.get('/reviews', reviewController.getReviews); //Hämta alla omdömen
 router.get('/reviews/:id', reviewController.getReviewById); //Hämta specifikt omdöme
 router.get('/reviews/filter/unapproved', reviewController.getUnapproved); //Hämta omdömen som inte är granskade ännu
 router.get('/reviews/filter/approved', reviewController.getApproved); //Hämta omdömen som är granskade
-router.post('/reviews', authController.authenticateToken, reviewController.addReview); //Lägg till omdöme
+router.post('/reviews', reviewController.addReview); //Lägg till omdöme
 router.put('/reviews/:id', authController.authenticateToken, reviewController.approveReview); //Ändra omdöme till approved: true
 router.delete('/reviews/:id', authController.authenticateToken, reviewController.deleteReview); //Radera
 
