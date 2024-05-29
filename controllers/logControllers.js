@@ -30,6 +30,7 @@ function resetErrors() {
 }
 
 module.exports.getLogs = async (req, res) => {
+    resetErrors();
     //Hämta loggar men begränsa till de 15 senaste
     try {
         const logs = await Log.find({}).sort({ timestamp: -1 }).limit(15);
