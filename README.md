@@ -15,7 +15,7 @@ Använd `npm install` i terminalen för att hämta hem samtliga paket efter att 
 
 ## Användning
 
-API:et är uppdelat i tre kollektioner. Det finns funktionalitet för att skapa och logga in användare, för att hantera produkter, och för att hantera användaromdömen.  
+API:et är uppdelat i fyra kollektioner. Det finns funktionalitet för att skapa och logga in användare, för att hantera produkter, och för att hantera användaromdömen. Den fjärde kollektionen är en logg.
 Skapande, uppdatering eller radering av produkter samt uppdatering eller radering av omdömen loggas automatiskt i en logg-kollektion. Skapande av ny användare loggas också, men då loggas det med ett default-användarnamn som utfört handlingen.
 Följande endpoints används:
 
